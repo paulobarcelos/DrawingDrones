@@ -1,0 +1,39 @@
+#!/bin/bash
+
+SRC_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd $SRC_DIR
+
+if [ -z $1 ]
+	then
+		echo "No project specified. Exiting."
+		exit 1
+	else
+		TARGET="$1"		
+fi
+
+
+# copy folder to dist
+rm -r ${TARGET}/dist
+cp -r ${TARGET} __temp__${TARGET}
+mv __temp__${TARGET} ${TARGET}/dist
+
+# clear src
+rm -r ${TARGET}/dist/src/
+mkdir ${TARGET}/dist/src/
+
+# add requirejs to src
+cp node_modules/requirejs/require.js ${TARGET}/dist/src/require.js
+
+# optimize js
+node node_modules/requirejs/bin/r.js -o baseUrl=${TARGET}/src name=main out=${TARGET}/dist/src/main.js paths.happy=../../node_modules/happy-toolkit optimizeCss=default preserveLicenseComments=false
+
+# optimize css
+node node_modules/requirejs/bin/r.js -o cssIn=${TARGET}/src/style.css out=${TARGET}/dist/src/style.css optimizeCss=default preserveLicenseComments=false
+
+file=$(cat $TARGET/dist/index.html)
+
+echo "${file//<!--happy-->*<!--\/happy-->/<link rel="stylesheet" href="src/style.css">
+		<script data-main="src/main.js" src="src/require.js"></script>}" >>  $TARGET/dist/.temp
+
+rm $TARGET/dist/index.html
+mv $TARGET/dist/.temp $TARGET/dist/index.html

@@ -1,0 +1,24 @@
+{
+  "name": "happy-toolkit-examples",
+  "version": "0.1.1",
+  "author": "Paulo Barcelos",
+  "description": "Examples of the Happy Toolkit.",
+  "homepage": "https://github.com/paulobarcelos/happy-examples",
+  "dependencies": {
+    "happy-toolkit" : "x",
+    "requirejs" : "x"
+    },
+  "keywords": [
+    "happy",
+    "happy-toolkit"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/paulobarcelos/happy-examples.git"
+  },
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
